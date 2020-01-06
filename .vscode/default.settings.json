@@ -4,5 +4,7 @@
     "statusBar.background": "#00ACD7",
     "statusBarItem.hoverBackground": "#0096BC",
     "statusBar.foreground": "#282C34"
-  }
+  },
+  "debug.internalConsoleOptions": "openOnSessionStart",
+  "debug.toolBarLocation": "docked"
 }
