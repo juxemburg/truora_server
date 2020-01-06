@@ -18,3 +18,4 @@
 .vscode/*
 !.vscode/launch.json
 !.vscode/default.settings.json
+__debug_bin
