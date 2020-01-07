@@ -38,5 +38,26 @@ func FindUser(userID int) (*AppUser, error) {
 	return &user, dberr
 }
 
-	return nil, nil
+/*ExistUser checks if a user, with a given login and password, exist*/
+func ExistUser(login string, password string) (bool, error) {
+	dbContext := database.GetDBContext()
+	statement := fmt.Sprintf(`select count(1)
+							  from serverDB.app_users
+							  where userLogin = '%v'
+							  AND userpass = '%v'`, login, password)
+	result, dberr := dbContext.DbExtraction(statement, func(rows *sql.Rows) (r interface{}, err error) {
+		for rows.Next() {
+			var count int
+			if err := rows.Scan(&count); err != nil {
+				return nil, apierrors.NewErrSQL(err.Error())
+			}
+			return count > 0, nil
+		}
+		return false, nil
+	})
+	exists, casted := result.(bool)
+	if !casted {
+		return false, apierrors.NewErrSQL("Error while retrieving the requested user")
+	}
+	return exists, dberr
 }
