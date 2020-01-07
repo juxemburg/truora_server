@@ -70,6 +70,12 @@ func HandleRequestResponse(w http.ResponseWriter, r *http.Request, fn func() (v 
 		case *apierrors.ErrBadRequest:
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(fmt.Sprintf("400 - %v", err.Error())))
+		case *apierrors.ErrUnauthorized:
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(fmt.Sprintf("401 - %v", err.Error())))
+		case *apierrors.ApplicationError:
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(fmt.Sprintf("500 - %v", err.Error())))
 		case *apierrors.ErrSQL:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(`500 - There was some issue with the server while handling 
