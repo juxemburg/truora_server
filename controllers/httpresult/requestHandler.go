@@ -80,11 +80,11 @@ func HandleRequestResponse(w http.ResponseWriter, r *http.Request, fn func() (v 
 		case *apierrors.ErrSQL:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(`500 - There was some issue with the server while handling 
-			the request, pelase contact the administrator. 🙂`))
+			the request, pelase contact the administrator. 😔`))
 		default:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(`500 - There was some issue with the server while handling 
-			the request, pelase contact the administrator. 🙂`))
+			the request, pelase contact the administrator. 😔`))
 		}
 	} else {
 		b, _ := json.Marshal(result)
