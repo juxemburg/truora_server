@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
+	"github.com/juxemburg/truora_server/controllers/filters"
 	"github.com/juxemburg/truora_server/controllers/httpresult"
 	"github.com/juxemburg/truora_server/services/authentication"
 )
@@ -29,6 +30,7 @@ var AuthenticationControllerRoutes = map[string]func(chi.Router){
 		r.Post("/", login) // POST /login
 	},
 	"logout": func(r chi.Router) {
+		r.Use(filters.AuthFilter)
 		r.Get("/", logout) // POST /logout
 	},
 }
