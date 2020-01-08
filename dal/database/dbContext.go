@@ -51,6 +51,7 @@ func (context DbContext) DbExtraction(statement string, allowsNull bool, extract
 	return result, nil
 }
 
+
 /*DbExecution executes multiple SQL statements in the database */
 func (context DbContext) DbExecution(statements []string) error {
 	db, dberr := context.dbConnection()
@@ -67,7 +68,6 @@ func (context DbContext) DbExecution(statements []string) error {
 
 	return nil
 }
-
 func newDbContext(datasourceName string) *DbContext {
 	return &DbContext{
 		driverName:     "postgres",
