@@ -45,7 +45,7 @@ func ExistUser(login string, password string) (bool, error) {
 							  from serverDB.app_users
 							  where userLogin = '%v'
 							  AND userpass = '%v'`, login, password)
-	result, dberr := dbContext.DbExtraction(statement, func(rows *sql.Rows) (r interface{}, err error) {
+	result, dberr := dbContext.DbExtraction(statement, false, func(rows *sql.Rows) (r interface{}, err error) {
 		for rows.Next() {
 			var count int
 			if err := rows.Scan(&count); err != nil {
