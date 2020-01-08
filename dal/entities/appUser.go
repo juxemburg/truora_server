@@ -20,7 +20,7 @@ returns null if there is no such user*/
 func FindUser(userID int) (*AppUser, error) {
 	dbContext := database.GetDBContext()
 	statement := fmt.Sprintf(`select * from serverDB.app_users where id = %d`, userID)
-	result, dberr := dbContext.DbExtraction(statement, func(rows *sql.Rows) (r interface{}, err error) {
+	result, dberr := dbContext.DbExtraction(statement, false, func(rows *sql.Rows) (r interface{}, err error) {
 		for rows.Next() {
 			var id int
 			var login, password string
@@ -31,11 +31,11 @@ func FindUser(userID int) (*AppUser, error) {
 		}
 		return nil, nil
 	})
-	user, casted := result.(AppUser)
+	user, casted := result.(*AppUser)
 	if !casted {
 		return nil, apierrors.NewErrSQL("Error while retrieving the requested user")
 	}
-	return &user, dberr
+	return user, dberr
 }
 
 /*ExistUser checks if a user, with a given login and password, exist*/
