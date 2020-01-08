@@ -51,6 +51,23 @@ func (context DbContext) DbExtraction(statement string, extractionFn func(rows *
 	return result, nil
 }
 
+/*DbExecution executes multiple SQL statements in the database */
+func (context DbContext) DbExecution(statements []string) error {
+	db, dberr := context.dbConnection()
+	defer db.Close()
+	if dberr != nil {
+		return dberr
+	}
+	for _, statement := range statements {
+		_, err := db.Exec(statement)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func newDbContext(datasourceName string) *DbContext {
 	return &DbContext{
 		driverName:     "postgres",
