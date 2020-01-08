@@ -26,7 +26,7 @@ func (context DbContext) dbConnection() (*sql.DB, error) {
 }
 
 /*DbExtraction retrieves an interface based on a SQL statement, alongside an extraction function */
-func (context DbContext) DbExtraction(statement string, extractionFn func(rows *sql.Rows) (r interface{}, err error)) (r interface{}, err error) {
+func (context DbContext) DbExtraction(statement string, allowsNull bool, extractionFn func(rows *sql.Rows) (interface{}, error)) (interface{}, error) {
 	db, dberr := context.dbConnection()
 	defer db.Close()
 	if dberr != nil {
@@ -44,7 +44,7 @@ func (context DbContext) DbExtraction(statement string, extractionFn func(rows *
 	if err != nil {
 		return nil, apierrors.NewErrSQL(rowErr.Error())
 	}
-	if result == nil {
+	if result == nil && !allowsNull {
 		return nil, apierrors.NewErrNotFound("The requested resource was not found")
 	}
 
