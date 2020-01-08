@@ -28,6 +28,7 @@ func (context DbContext) dbConnection() (*sql.DB, error) {
 /*DbExtraction retrieves an interface based on a SQL statement, alongside an extraction function */
 func (context DbContext) DbExtraction(statement string, extractionFn func(rows *sql.Rows) (r interface{}, err error)) (r interface{}, err error) {
 	db, dberr := context.dbConnection()
+	defer db.Close()
 	if dberr != nil {
 		return nil, dberr
 	}
