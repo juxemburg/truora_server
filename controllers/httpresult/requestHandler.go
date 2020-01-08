@@ -77,6 +77,8 @@ func HandleRequestResponse(w http.ResponseWriter, r *http.Request, fn func() (v 
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(fmt.Sprintf("500 - %v", err.Error())))
 		case *apierrors.ErrBadGateway:
+			w.WriteHeader(http.StatusBadGateway)
+			w.Write([]byte(fmt.Sprintf("502 - %v", err.Error())))
 		case *apierrors.ErrSQL:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(`500 - There was some issue with the server while handling 
