@@ -6,5 +6,11 @@
     "statusBar.foreground": "#282C34"
   },
   "debug.internalConsoleOptions": "openOnSessionStart",
-  "debug.toolBarLocation": "docked"
+  "debug.toolBarLocation": "docked",
+  "go.delveConfig": {
+    "dlvLoadConfig": {
+      "maxStringLen": 1024
+    },
+    "apiVersion": 2
+  }
 }

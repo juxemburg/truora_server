@@ -76,14 +76,17 @@ func HandleRequestResponse(w http.ResponseWriter, r *http.Request, fn func() (v 
 		case *apierrors.ApplicationError:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(fmt.Sprintf("500 - %v", err.Error())))
+		case *apierrors.ErrBadGateway:
+			w.WriteHeader(http.StatusBadGateway)
+			w.Write([]byte(fmt.Sprintf("502 - %v", err.Error())))
 		case *apierrors.ErrSQL:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(`500 - There was some issue with the server while handling 
-			the request, pelase contact the administrator. 🙂`))
+			the request, pelase contact the administrator. 😔`))
 		default:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(`500 - There was some issue with the server while handling 
-			the request, pelase contact the administrator. 🙂`))
+			the request, pelase contact the administrator. 😔`))
 		}
 	} else {
 		b, _ := json.Marshal(result)
