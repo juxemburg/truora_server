@@ -49,16 +49,15 @@ func GetRecentSearches() ([]*RecentSearchMetadata, error) {
 	result, dberr := dbContext.DbExtraction(statement, false, func(rows *sql.Rows) (interface{}, error) {
 		var searches []*RecentSearchMetadata
 		for rows.Next() {
-			var hostID, lastVisited, logoURL, pageTitle string
+			var hostID, logoURL, pageTitle string
+			var lastVisited time.Time
 			if err := rows.Scan(&hostID, &lastVisited, &logoURL, &pageTitle); err != nil {
 				return nil, apierrors.NewErrSQL(err.Error())
 			}
-			//TODO: handle error
-			lastVisitedTime, _ := time.Parse(common.DateDbFormat, lastVisited)
 			searches = append(searches,
 				&RecentSearchMetadata{
 					HostID:      hostID,
-					LastVisited: lastVisitedTime,
+					LastVisited: lastVisited,
 					LogoURL:     logoURL,
 					PageTitle:   pageTitle,
 				})
