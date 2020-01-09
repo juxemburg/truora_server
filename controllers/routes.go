@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/render"
 	"github.com/juxemburg/truora_server/controllers/authentication"
 	"github.com/juxemburg/truora_server/controllers/domaininfo"
+	"github.com/juxemburg/truora_server/controllers/recentsearch"
 )
 
 /*GetRouteConfig ...*/
@@ -23,6 +24,7 @@ func GetRouteConfig() *chi.Mux {
 	r.Route("/api", func(subr chi.Router) {
 		routeRegistration(subr, "authentication", authentication.AuthenticationControllerRoutes)
 		routeRegistration(subr, "domainInfo", domaininfo.DomainInfoControllerRoutes)
+		routeRegistration(subr, "recentsearch", recentsearch.RecentSearchControllerRoutes)
 	})
 
 	return r
