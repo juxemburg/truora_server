@@ -72,7 +72,7 @@ func getDomainServers(hostName string) ([]*DomainServer, error) {
 	dbContext := database.GetDBContext()
 	statement := fmt.Sprintf(`select * from serverDB.domain_server where hostId = '%v'`, hostName)
 
-	result, dberr := dbContext.DbExtraction(statement, false, func(rows *sql.Rows) (r interface{}, err error) {
+	result, dberr := dbContext.DbExtraction(statement, false, func(rows *sql.Rows) (interface{}, error) {
 		var servers []*DomainServer
 		for rows.Next() {
 			var address, hostID, sslGrade, country, owner string

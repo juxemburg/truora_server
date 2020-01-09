@@ -37,7 +37,7 @@ func LoginService(viewModel LoginViewModel) (*LoginResponse, error) {
 		"exp":  time.Now().Add(time.Hour * time.Duration(1)).Unix(),
 		"iat":  time.Now().Unix(),
 	})
-	tokenString, err := token.SignedString([]byte(common.APP_KEY))
+	tokenString, err := token.SignedString([]byte(common.AppKey))
 	if err != nil {
 		return nil, apierrors.NewApplicationError("Token generation failed")
 	}

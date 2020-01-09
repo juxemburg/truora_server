@@ -2,7 +2,6 @@ package domaininfo
 
 import (
 	"net/http"
-	"regexp"
 
 	"github.com/go-chi/chi"
 	"github.com/juxemburg/truora_server/apierrors"
@@ -16,12 +15,6 @@ func getDomainInfo(w http.ResponseWriter, r *http.Request) {
 		keys, ok := r.URL.Query()["domain"]
 		if !ok || len(keys[0]) < 1 {
 			return nil, apierrors.NewErrBadRequest("Url Param 'domain' is missing")
-		}
-
-		uriRegexp := regexp.MustCompile(`^[https:\/\/]?[www\.]?[A-Za-z0-9\.]+`)
-
-		if !uriRegexp.MatchString(keys[0]) {
-			return nil, apierrors.NewErrBadRequest("Invalid domain name 😒")
 		}
 
 		return serverinfo.GetDomainInfo(keys[0])

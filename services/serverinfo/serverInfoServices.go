@@ -79,7 +79,7 @@ func (di domainInfo) toDomainInfo(prevDomainInfo *entities.DomainInfo) *DomainIn
 	}
 	newDomainEntity := newDomaininfo.toEntity()
 	if prevDomainInfo != nil {
-		serversChanged = reflect.DeepEqual(prevDomainInfo, newDomainEntity)
+		serversChanged = !reflect.DeepEqual(prevDomainInfo, newDomainEntity)
 	}
 	newDomaininfo.ServersChanged = serversChanged
 	return newDomaininfo
@@ -188,6 +188,10 @@ func GetDomainInfo(domainName string) (*DomainInfoViewModel, error) {
 	if err != nil {
 		log.Println(err.Error())
 		return nil, apierrors.NewApplicationError("Error while inserting into the database")
+	}
+	searchErr := entities.InsertRecentSearch(domain)
+	if searchErr != nil {
+		log.Println(err.Error())
 	}
 	return domainInfo, err
 }
