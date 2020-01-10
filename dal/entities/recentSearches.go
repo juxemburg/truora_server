@@ -27,7 +27,7 @@ type RecentSearchMetadata struct {
 /*InsertRecentSearch inserts, or updates if exists, a recently searched host into the database*/
 func InsertRecentSearch(hostID string) error {
 	dbContext := database.GetDBContext()
-	currentTime := time.Now()
+	currentTime := time.Now().UTC()
 	var statements = []string{
 		fmt.Sprintf(`
 			DELETE 
