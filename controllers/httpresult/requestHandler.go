@@ -18,7 +18,6 @@ const (
 
 /*HandleRequestBody tries to process the request's body, returning an error otherwise*/
 func HandleRequestBody(w http.ResponseWriter, r *http.Request, dst interface{}) error {
-
 	if r.Header.Get("Content-type") != "application/json" {
 		return apierrors.NewErrUnsupportedMediaType("The Content-Type must be application/json")
 	}
@@ -73,6 +72,9 @@ func HandleRequestResponse(w http.ResponseWriter, r *http.Request, fn func() (v 
 		case *apierrors.ErrUnauthorized:
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte(fmt.Sprintf("401 - %v", err.Error())))
+		case *apierrors.ErrUnsupportedMediaType:
+			w.WriteHeader(http.StatusUnsupportedMediaType)
+			w.Write([]byte(fmt.Sprintf("415 - %v", err.Error())))
 		case *apierrors.ApplicationError:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(fmt.Sprintf("500 - %v", err.Error())))
