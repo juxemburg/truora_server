@@ -10,6 +10,7 @@ import (
 	"github.com/juxemburg/truora_server/dal/entities"
 	"github.com/juxemburg/truora_server/services/htmlinfo"
 	"github.com/juxemburg/truora_server/services/restclient"
+	"github.com/juxemburg/truora_server/services/whois"
 )
 
 const (
@@ -59,11 +60,12 @@ func (di domainInfo) toDomainInfo(prevDomainInfo *entities.DomainInfo) *DomainIn
 	}
 
 	for _, server := range di.Endpoints {
+		whoIsResults := whois.GetWhoIsCommandDetails(server.IPAddress)
 		serverinfo = append(serverinfo, &ServerViewModel{
 			Address:  server.IPAddress,
 			SslGrade: server.Grade,
-			Country:  "",
-			Owner:    "",
+			Country:  whoIsResults.Country,
+			Owner:    whoIsResults.Owner,
 		})
 		currentMaxGrade = maxGrade(currentMaxGrade, server.Grade)
 	}
@@ -96,10 +98,10 @@ func maxGrade(g1 string, g2 string) string {
 
 /*ServerViewModel ...*/
 type ServerViewModel struct {
-	Address  string
-	SslGrade string
-	Country  string
-	Owner    string
+	Address  string `json:"address"`
+	SslGrade string `json:"sslGrade"`
+	Country  string `json:"country"`
+	Owner    string `json:"owner"`
 }
 
 func (vw ServerViewModel) toEntity(host string) *entities.DomainServer {
@@ -113,14 +115,14 @@ func (vw ServerViewModel) toEntity(host string) *entities.DomainServer {
 
 /*DomainInfoViewModel ...*/
 type DomainInfoViewModel struct {
-	Host             string
-	ServersChanged   bool
-	SslGrade         string
-	PreviousSslGrade string
-	Logo             string
-	Title            string
-	IsDown           bool
-	Servers          []*ServerViewModel
+	Host             string             `json:"host"`
+	ServersChanged   bool               `json:"serversChanged"`
+	SslGrade         string             `json:"sslGrade"`
+	PreviousSslGrade string             `json:"previousSslGrade"`
+	Logo             string             `json:"logo"`
+	Title            string             `json:"title"`
+	IsDown           bool               `json:"isDown"`
+	Servers          []*ServerViewModel `json:"servers"`
 }
 
 func (vw DomainInfoViewModel) toEntity() *entities.DomainInfo {

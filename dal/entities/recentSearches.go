@@ -18,16 +18,16 @@ type RecentSearch struct {
 
 /*RecentSearchMetadata ...*/
 type RecentSearchMetadata struct {
-	HostID      string
-	LastVisited time.Time
-	LogoURL     string
-	PageTitle   string
+	HostID      string    `json:"hostID"`
+	LastVisited time.Time `json:"lastVisited"`
+	LogoURL     string    `json:"logoURL"`
+	PageTitle   string    `json:"pageTitle"`
 }
 
 /*InsertRecentSearch inserts, or updates if exists, a recently searched host into the database*/
 func InsertRecentSearch(hostID string) error {
 	dbContext := database.GetDBContext()
-	currentTime := time.Now()
+	currentTime := time.Now().UTC()
 	var statements = []string{
 		fmt.Sprintf(`
 			DELETE 

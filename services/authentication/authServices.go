@@ -17,7 +17,7 @@ type LoginViewModel struct {
 
 /*LoginResponse ...*/
 type LoginResponse struct {
-	AuthToken string
+	AuthToken string `json:"authToken"`
 }
 
 /*LoginService ...*/
