@@ -10,6 +10,7 @@ import (
 	"github.com/juxemburg/truora_server/dal/entities"
 	"github.com/juxemburg/truora_server/services/htmlinfo"
 	"github.com/juxemburg/truora_server/services/restclient"
+	"github.com/juxemburg/truora_server/services/whois"
 )
 
 const (
@@ -59,11 +60,12 @@ func (di domainInfo) toDomainInfo(prevDomainInfo *entities.DomainInfo) *DomainIn
 	}
 
 	for _, server := range di.Endpoints {
+		whoIsResults := whois.GetWhoIsCommandDetails(server.IPAddress)
 		serverinfo = append(serverinfo, &ServerViewModel{
 			Address:  server.IPAddress,
 			SslGrade: server.Grade,
-			Country:  "",
-			Owner:    "",
+			Country:  whoIsResults.Country,
+			Owner:    whoIsResults.Owner,
 		})
 		currentMaxGrade = maxGrade(currentMaxGrade, server.Grade)
 	}
